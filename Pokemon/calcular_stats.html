@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calculadora de Estadísticas Pokémon</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="calcular_stats_style.css">
+</head>
+
+<body class="p-4">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0">Estadísticas Pokémon</h3>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            Navegar
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="../index.html">Menú principal</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="dropdown-header">Loomian Legacy</li>
+            <li><a class="dropdown-item" href="../Loomian_Legacy/calcular_efectividad.html">Calcular Efectividades</a></li>
+            <li class="dropdown-header">Pokémon</li>
+            <li><a class="dropdown-item" href="#">Calcular Stats</a></li>
+            <li><a class="dropdown-item" href="calcular_efectividad.html">Calcular Efectividades</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- Agrega este script de Bootstrap justo antes del cierre de body si usas dropdowns -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Objetivo de Calculo, Nivel del Poke y  -->
+
+<div class="row mb-3">
+    <div class="col-12 col-md-4">
+        <label for="calculo" class="form-label">Calcular:</label>
+        <select id="calculo" class="form-select" onchange="gestionarModoCalculo()">
+            <option value="nivel">Estadística Final</option>
+            <option value="base">Estadística Base</option>
+            <option value="iv">IV</option>
+            <option value="ev">EV</option>
+        </select>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label for="nivel" class="form-label">Nivel</label>
+        <input type="number" class="form-control" id="nivel" min="1" value="50">
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label for="naturaleza" class="form-label">Naturaleza</label>
+        <select class="form-select" id="naturaleza" onchange="actualizarNaturaleza()">
+            <option value="neutral-neutral">Fuerte (neutral)</option>
+            <option value="Defensa-Ataque">Osada (+Def, -Atk)</option>
+            <option value="At. Esp.-Ataque">Modesta (+SpA, -Atk)</option>
+            <option value="Def. Esp.-Ataque">Serena (+SpD, -Atk)</option>
+            <option value="Velocidad-Ataque">Miedosa (+Vel, -Atk)</option>
+
+            <option value="Ataque-Defensa">Huraña (+Atk, -Def)</option>
+            <option value="neutral-neutral">Dócil (neutral)</option>
+            <option value="At. Esp.-Defensa">Afable (+SpA, -Def)</option>
+            <option value="Def. Esp.-Defensa">Amable (+SpD, -Def)</option>
+            <option value="Velocidad-Defensa">Activa (+Vel, -Def)</option>
+
+            <option value="Ataque-At. Esp.">Firme (+Atk, -SpA)</option>
+            <option value="Defensa-At. Esp.">Agitada (+Def, -SpA)</option>
+            <option value="neutral-neutral">Tímida (neutral)</option>
+            <option value="Def. Esp.-At. Esp.">Cauta (+SpD, -SpA)</option>
+            <option value="Velocidad-At. Esp.">Alegre (+Vel, -SpA)</option>
+
+            <option value="Ataque-Def. Esp.">Pícara (+Atk, -SpD)</option>
+            <option value="Defensa-Def. Esp.">Floja (+Def, -SpD)</option>
+            <option value="At. Esp.-Def. Esp.">Alocada (+SpA, -SpD)</option>
+            <option value="neutral-neutral">Rara (neutral)</option>
+            <option value="Velocidad-Def. Esp.">Ingenua (+Vel, -SpD)</option>
+            
+            <option value="Ataque-Velocidad">Audaz (+Atk, -Vel)</option>
+            <option value="Defensa-Velocidad">Plácida (+Def, -Vel)</option>
+            <option value="At. Esp.-Velocidad">Mansa (+SpA, -Vel)</option>
+            <option value="Def. Esp.-Velocidad">Grosera (+SpD, -Vel)</option>
+            <option value="neutral-neutral">Seria (neutral)</option>
+        </select>
+      </div>
+      
+</div>
+
+<!-- ✅ Envolver tabla en contenedor responsive -->
+<!-- Tabla de estadísticas -->
+<div class="table-responsive">
+<table class="table table-bordered text-center align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>Estadística</th>
+            <th>Estadística Final</th>
+            <th>Base <span id="resultado-base" style="font-weight: normal;"></span></th>
+            <th>IV</th>
+            <th>EV</th>
+            <th>Naturaleza</th>
+        </tr>
+    </thead>
+    <tbody id="stats-table">
+        <tr data-stat="Salud">
+            <th>Salud</th>
+            <td><input type="number" class="form-control" min="1" value="1" id="nivel-Salud"></td>
+            <td><input type="number" class="form-control" min="1" value="1" id="base-Salud"></td>
+            <td><input type="number" class="form-control" min="0" max="31" value="15" id="iv-Salud"></td>
+            <td><input type="number" class="form-control" min="0" max="252" value="0" id="ev-Salud"></td>
+            <td class="naturaleza-label"></td>
+        </tr>
+        <tr data-stat="Ataque">
+            <th>Ataque</th>
+            <td><input type="number" class="form-control" min="1" value="1" id="nivel-Ataque"></td>
+            <td><input type="number" class="form-control" min="1" value="1" id="base-Ataque"></td>
+            <td><input type="number" class="form-control" min="0" max="31" value="15" id="iv-Ataque"></td>
+            <td><input type="number" class="form-control" min="0" max="252" value="0" id="ev-Ataque"></td>
+            <td class="naturaleza-label"><input type="hidden" value="1" id="naturaleza-Ataque"></td>
+        </tr>
+        <tr data-stat="Defensa">
+            <th>Defensa</th>
+            <td><input type="number" class="form-control" min="1" value="1" id="nivel-Defensa"></td>
+            <td><input type="number" class="form-control" min="1" value="1" id="base-Defensa"></td>
+            <td><input type="number" class="form-control" min="0" max="31" value="15" id="iv-Defensa"></td>
+            <td><input type="number" class="form-control" min="0" max="252" value="0" id="ev-Defensa"></td>
+            <td class="naturaleza-label"><input type="hidden" value="1" id="naturaleza-Defensa"></td>
+        </tr>
+        <tr data-stat="At. Esp.">
+            <th>At. Esp.</th>
+            <td><input type="number" class="form-control" min="1" value="1" id="nivel-At. Esp."></td>
+            <td><input type="number" class="form-control" min="1" value="1" id="base-At. Esp."></td>
+            <td><input type="number" class="form-control" min="0" max="31" value="15" id="iv-At. Esp."></td>
+            <td><input type="number" class="form-control" min="0" max="252" value="0" id="ev-At. Esp."></td>
+            <td class="naturaleza-label"><input type="hidden" value="1" id="naturaleza-At. Esp."></td>
+        </tr>
+        <tr data-stat="Def. Esp.">
+            <th>Def. Esp.</th>
+            <td><input type="number" class="form-control" min="1" value="1" id="nivel-Def. Esp."></td>
+            <td><input type="number" class="form-control" min="1" value="1" id="base-Def. Esp."></td>
+            <td><input type="number" class="form-control" min="0" max="31" value="15" id="iv-Def. Esp."></td>
+            <td><input type="number" class="form-control" min="0" max="252" value="0" id="ev-Def. Esp."></td>
+            <td class="naturaleza-label"><input type="hidden" value="1" id="naturaleza-Def. Esp."></td>
+        </tr>
+        <tr data-stat="Velocidad">
+            <th>Velocidad</th>
+            <td><input type="number" class="form-control" min="1" value="1" id="nivel-Velocidad"></td>
+            <td><input type="number" class="form-control" min="1" value="1" id="base-Velocidad"></td>
+            <td><input type="number" class="form-control" min="0" max="31" value="15" id="iv-Velocidad"></td>
+            <td><input type="number" class="form-control" min="0" max="252" value="0" id="ev-Velocidad"></td>
+            <td class="naturaleza-label"><input type="hidden" value="1" id="naturaleza-Velocidad"></td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+<div class="text-center mt-4">
+    <button class="btn btn-primary" onclick="calcularEstadisticas()">Calcular</button>
+</div>
+
+<script src="calcular_stats_script.js"></script>
+
+</body>
+</html>

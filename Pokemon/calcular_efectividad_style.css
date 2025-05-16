@@ -1,0 +1,43 @@
+@media (max-width: 768px) {
+    #tabla-efectividad {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #tabla-efectividad table {
+        min-width: 600px; /* o el ancho real que tenga la tabla */
+        width: max-content;
+    }
+}
+
+table {
+    width: 100%;
+    margin: 0 auto;
+    table-layout: fixed;
+}
+
+td {
+    width: 16.66%;
+    height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 4px;
+    border: 1px solid #dee2e6;
+    font-size: 1rem;
+}
+
+.eficaz {
+    color: green;
+    font-weight: bold;
+}
+
+.no-eficaz {
+    color: red;
+    font-weight: bold;
+}
+
+.tipo-seleccionado {
+    font-weight: bold;
+    background-color: #e9ecef;
+}

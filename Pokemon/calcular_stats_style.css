@@ -1,0 +1,26 @@
+@media (max-width: 768px) {
+    table {
+        font-size: 0.85rem;
+    }
+
+    table th, table td {
+        min-width: 80px;
+    }
+
+    .form-control {
+        font-size: 0.85rem;
+        padding: 0.3rem 0.4rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+    }
+}
+
+.buffed {
+    background-color: #d4edda !important;
+}
+
+.nerfed {
+    background-color: #f8d7da !important;
+}
